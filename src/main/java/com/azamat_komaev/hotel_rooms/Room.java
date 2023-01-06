@@ -1,32 +1,49 @@
 package com.azamat_komaev.hotel_rooms;
 
-import com.azamat_komaev.hotel_rooms.HotelRoomType;
+import java.util.Objects;
 
 class Room {
     private final HotelRoomType type;
     private int count;
-    private int price;
 
-    public Room(HotelRoomType type, int count, int price) {
-        checkCountAndPrice(count, price);
+    public Room(HotelRoomType type, int count) {
+        checkCount(count);
 
         this.type = type;
         this.count = count;
-        this.price = price;
     }
 
-    private void checkCountAndPrice(int count, int price) {
-        if (count <= 0 || price <= 0) {
-            throw new IllegalArgumentException("Count and price cannot be less or equal to 0!");
+    private void checkCount(int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Count cannot be less or equal to 0!");
         }
     }
 
-    public boolean book() {
-        if (count == 0) {
-            return false;
-        }
+    public boolean shouldBeUpgraded() {
+        return count <= 0;
+    }
 
+    public void book() {
         count -= 1;
-        return true;
     };
+
+    public HotelRoomType getType() {
+        return type;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room room)) return false;
+        return count == room.count && type == room.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, count);
+    }
 }
